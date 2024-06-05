@@ -191,14 +191,26 @@ extension StatusTableViewController {
             if SettingsContext.shared.automaticCalloutsEnabled {
                 self.reenableCalloutsAfterReload = true
                 SettingsContext.shared.automaticCalloutsEnabled = false
-            }
+            }    
+            self.performSegue(withIdentifier: Segue.showLoadingModal, sender: self)
             
-            self.displayMarkersPrompt()
+            // Check that tiles can be downloaded before we attempt to delete the cache
+            AppContext.shared.spatialDataContext.checkServiceConnection { [weak self] (success) in
+                guard success else {
+                    self?.displayUnableToClearCacheWarning()
+                    return
+                }
+                
+                // Clear the cache and keep the markers
+                self?.clearCache(false)
+            }
         }))
         
         present(alert, animated: true, completion: nil)
     }
     
+    /// ask the user if they want to keep the markers.
+    /// This is not used, but could be reenabled for debug builds in the future.
     private func displayMarkersPrompt() {
         let alert = UIAlertController(title: GDLocalizedString("settings.clear_cache.markers.alert_title"),
                                       message: GDLocalizedString("settings.clear_cache.markers.alert_message"),
