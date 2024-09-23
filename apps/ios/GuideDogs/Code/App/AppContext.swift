@@ -205,6 +205,59 @@ class AppContext {
     }
     
     // MARK: Actions
+
+    /// Clears the map data cache
+    /// fixme: probably not the best place for this, but it is needed for updates 
+    /// from version 1.1.2
+    func clearMapDataCache() {
+        // copied from StatusViewController.swift
+        AppContext.shared.eventProcessor.hush(playSound: false)
+        guard let database = try? RealmHelper.getDatabaseRealm() else {
+            GDLogSpatialDataError("Error attempting to get database data!")
+            return
+        }
+        
+        var storedAddresses: [Address] = []
+        for por in database.objects(ReferenceEntity.self) {
+            if let entity = por.getPOI() as? Address, storedAddresses.contains(where: { $0.key == entity.key }) == false {
+                // Copy the address
+                storedAddresses.append(Address(value: entity))
+            }
+        }
+        
+        let success = AppContext.shared.spatialDataContext.clearCache()
+        
+        GDATelemetry.track("settings.clear_cache", with: ["keep_user_data": String(true)])
+        
+        guard success else {
+            GDLogSpatialDataError("Error attempting to delete cached data!")
+            return
+        }
+        
+        guard storedAddresses.count > 0 else {
+            GDLogSpatialDataWarn("Cached data deleted")
+            return
+        }
+        
+        // Save stored addresses
+        guard let cache = try? RealmHelper.getCacheRealm() else {
+            GDLogSpatialDataError("Cached data deleted, but couldn't get cache realm to restore addresses!")
+            return
+        }
+        
+        do {
+            try cache.write {
+                for address in storedAddresses {
+                    cache.create(Address.self, value: address, update: .modified)
+                }
+            }
+        } catch {
+            GDLogSpatialDataError("Cached data deleted, but couldn't restore addresses!")
+            return
+        }
+        
+        GDLogSpatialDataWarn("Cached data deleted and addresses restored")
+    }
     
     /// Starts the core components of the app including the sound context, the geolocation context,
     /// and the spatial data context. If the app is launched into the background by the system (e.g.
@@ -239,6 +292,13 @@ class AppContext {
         DeviceMotionManager.shared.startDeviceMotionUpdates()
         cloudKeyValueStore.start()
         spatialDataContext.start()
+        
+        // if the app was updated or there is no lastRunVersion, clear the cache
+        let lastRunVersion = UserDefaults.standard.string(forKey: "lastRunVersion") ?? ""
+        if lastRunVersion != AppContext.appVersion {
+            clearMapDataCache()
+            UserDefaults.standard.set(AppContext.appVersion, forKey: "lastRunVersion")
+        }
         
         // Do not play the app launch sound if onboarding is in-progress
         if !(eventProcessor.activeBehavior is OnboardingBehavior) {
