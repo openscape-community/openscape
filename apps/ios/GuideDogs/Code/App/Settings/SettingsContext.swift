@@ -487,3 +487,4 @@ extension SettingsContext: AutoCalloutSettingsProvider {
         }
     }
 }
+

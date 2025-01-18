@@ -1,4 +1,3 @@
-//
 //  SettingsViewController.swift
 //  Soundscape
 //
@@ -7,19 +6,19 @@
 //
 
 import UIKit
-
 import AppCenterAnalytics
 
 class SettingsViewController: BaseTableViewController {
-    
+
     private enum Section: Int, CaseIterable {
         case general = 0
         case audio = 1
-        case callouts = 2
-        case streetPreview = 3
-        case troubleshooting = 4
-        case about = 5
-        case telemetry = 6
+        case beacon = 2
+        case callouts = 3
+        case streetPreview = 4
+        case troubleshooting = 5
+        case about = 6
+        case telemetry = 7
     }
     
     private enum CalloutsRow: Int, CaseIterable {
@@ -33,19 +32,21 @@ class SettingsViewController: BaseTableViewController {
     private static let cellIdentifiers: [IndexPath: String] = [
         IndexPath(row: 0, section: Section.general.rawValue): "languageAndRegion",
         IndexPath(row: 1, section: Section.general.rawValue): "voice",
-        IndexPath(row: 2, section: Section.general.rawValue): "beaconSettings",
-        IndexPath(row: 3, section: Section.general.rawValue): "volumeSettings",
-        IndexPath(row: 4, section: Section.general.rawValue): "manageDevices",
-        IndexPath(row: 5, section: Section.general.rawValue): "siriShortcuts",
-        
+        IndexPath(row: 2, section: Section.general.rawValue): "volumeSettings",
+        IndexPath(row: 3, section: Section.general.rawValue): "manageDevices",
+        IndexPath(row: 4, section: Section.general.rawValue): "siriShortcuts",
+
         IndexPath(row: 0, section: Section.audio.rawValue): "mixAudio",
+
+        IndexPath(row: 0, section: Section.beacon.rawValue): "beaconSettings",
+  
 
         IndexPath(row: CalloutsRow.all.rawValue, section: Section.callouts.rawValue): "allCallouts",
         IndexPath(row: CalloutsRow.poi.rawValue, section: Section.callouts.rawValue): "poiCallouts",
         IndexPath(row: CalloutsRow.mobility.rawValue, section: Section.callouts.rawValue): "mobilityCallouts",
         IndexPath(row: CalloutsRow.beacon.rawValue, section: Section.callouts.rawValue): "beaconCallouts",
         IndexPath(row: CalloutsRow.shake.rawValue, section: Section.callouts.rawValue): "shakeCallouts",
-        
+
         IndexPath(row: 0, section: Section.streetPreview.rawValue): "streetPreview",
         IndexPath(row: 0, section: Section.troubleshooting.rawValue): "troubleshooting",
         IndexPath(row: 0, section: Section.about.rawValue): "about",
@@ -62,6 +63,20 @@ class SettingsViewController: BaseTableViewController {
     // MARK: Properties
 
     @IBOutlet weak var largeBannerContainerView: UIView!
+    
+    private var expandedSections: Set<Int> = []
+    
+    // Section Descriptions
+    private static let sectionDescriptions: [Section: String] = [
+        .general: "General settings for the app.",
+        .audio: "Control how audio interacts with other media.",
+        .beacon: "Settings for beacon management.",
+        .callouts: "Manage the callouts that help navigate.",
+        .streetPreview: "Settings for including unnamed roads.",
+        .troubleshooting: "Options for troubleshooting the app.",
+        .about: "Information about the app.",
+        .telemetry: "Manage data collection and privacy."
+    ]
 
     // MARK: View Life Cycle
 
@@ -73,6 +88,7 @@ class SettingsViewController: BaseTableViewController {
         GDATelemetry.trackScreenView("settings")
 
         self.title = GDLocalizedString("settings.screen_title")
+        expandedSections = []
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -81,60 +97,62 @@ class SettingsViewController: BaseTableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sectionType = Section(rawValue: section) else { return 0 }
-        
+
+       
         switch sectionType {
-        case .general: return 6
-        case .audio: return 1
-        case .callouts: return SettingsContext.shared.automaticCalloutsEnabled ? 5 : 1
-        case .streetPreview: return 1
-        case .troubleshooting: return 1
-        case .about: return 1
-        case .telemetry: return 1
+        case .general: return expandedSections.contains(section) ? 5 : 0
+        case .audio: return expandedSections.contains(section) ? 1 : 0
+        case .beacon: return expandedSections.contains(section) ? 1 : 0
+        case .callouts:
+            return SettingsContext.shared.automaticCalloutsEnabled && expandedSections.contains(section) ? 5 : 0
+        case .streetPreview, .troubleshooting, .about, .telemetry:
+            return expandedSections.contains(section) ? 1 : 0
         }
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return expandedSections.contains(indexPath.section) ? UITableView.automaticDimension : 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard expandedSections.contains(indexPath.section) else {
+            return UITableViewCell()
+        }
+        
         let identifier = SettingsViewController.cellIdentifiers[indexPath]
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier ?? "default", for: indexPath)
         
-        guard let sectionType = Section(rawValue: indexPath.section) else {
-            return tableView.dequeueReusableCell(withIdentifier: identifier ?? "default", for: indexPath)
-        }
-
-        switch sectionType {
+        switch Section(rawValue: indexPath.section) {
         case .callouts:
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier ?? "default", for: indexPath) as! CalloutSettingsCellView
-            cell.delegate = self
-
-            if let rowType = CalloutsRow(rawValue: indexPath.row) {
-                switch rowType {
-                case .all: cell.type = .all
-                case .poi: cell.type = .poi
-                case .mobility: cell.type = .mobility
-                case .beacon: cell.type = .beacon
-                case .shake: cell.type = .shake
-                }
-            }
-            
-            return cell
-            
+            configureCalloutCell(cell as! CalloutSettingsCellView, at: indexPath)
         case .telemetry:
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier ?? "default", for: indexPath) as! TelemetrySettingsTableViewCell
-            cell.parent = self
-            
-            return cell
-            
+            (cell as! TelemetrySettingsTableViewCell).parent = self
         case .audio:
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier ?? "default", for: indexPath) as! MixAudioSettingCell
-            cell.delegate = self
-            return cell
-            
+            (cell as! MixAudioSettingCell).delegate = self
         default:
-            return tableView.dequeueReusableCell(withIdentifier: identifier ?? "default", for: indexPath)
+            break
         }
         
+        return cell
     }
     
-    // MARK: UITableViewDataSource
+    private func configureCalloutCell(_ cell: CalloutSettingsCellView, at indexPath: IndexPath) {
+        cell.delegate = self
+        if let rowType = CalloutsRow(rawValue: indexPath.row) {
+            switch rowType {
+            case .all:
+                cell.type = .all
+            case .poi:
+                cell.type = .poi
+            case .mobility:
+                cell.type = .mobility
+            case .beacon:
+                cell.type = .beacon
+            case .shake:
+                cell.type = .shake
+            }
+        }
+    }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard let sectionType = Section(rawValue: section) else { return nil }
@@ -142,6 +160,7 @@ class SettingsViewController: BaseTableViewController {
         switch sectionType {
         case .general: return GDLocalizedString("settings.section.general")
         case .audio: return GDLocalizedString("settings.audio.media_controls")
+        case .beacon: return GDLocalizedString("Beacon")
         case .callouts: return GDLocalizedString("menu.manage_callouts")
         case .about: return GDLocalizedString("settings.section.about")
         case .streetPreview: return GDLocalizedString("preview.title")
@@ -153,6 +172,10 @@ class SettingsViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         guard let sectionType = Section(rawValue: section) else { return nil }
 
+        if expandedSections.contains(section) {
+            return SettingsViewController.sectionDescriptions[sectionType]
+        }
+
         switch sectionType {
         case .audio: return GDLocalizedString("settings.audio.mix_with_others.description")
         case .streetPreview: return GDLocalizedString("preview.include_unnamed_roads.subtitle")
@@ -160,30 +183,72 @@ class SettingsViewController: BaseTableViewController {
         default: return nil
         }
     }
+
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+
+        header.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleHeaderTap(_:))))
+        header.tag = section
+
+        header.textLabel?.textColor = .white
+        header.textLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        header.contentView.backgroundColor = UIColor(named: "HeaderBackgroundColor")
+
+        // Accessibility
+        header.accessibilityTraits = .header
+        header.accessibilityLabel = SettingsViewController.sectionDescriptions[Section(rawValue: section)!]
+        header.accessibilityHint = "Double tap to expand or collapse this section"
+
+        let chevronImageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+        chevronImageView.tintColor = .white
+        chevronImageView.translatesAutoresizingMaskIntoConstraints = false
+        header.contentView.addSubview(chevronImageView)
+
+        NSLayoutConstraint.activate([
+            chevronImageView.trailingAnchor.constraint(equalTo: header.contentView.trailingAnchor, constant: -15),
+            chevronImageView.centerYAnchor.constraint(equalTo: header.contentView.centerYAnchor),
+            chevronImageView.widthAnchor.constraint(equalToConstant: 20),
+            chevronImageView.heightAnchor.constraint(equalToConstant: 20)
+        ])
+    }
+
+    @objc private func handleHeaderTap(_ gesture: UITapGestureRecognizer) {
+            guard let header = gesture.view as? UITableViewHeaderFooterView else { return }
+            let section = header.tag
+
+            if section == Section.callouts.rawValue {
+                // Navigate to CalloutsSettingsViewController
+                let calloutsSettingsVC = CalloutSettingsViewController()
+                self.navigationController?.pushViewController(calloutsSettingsVC, animated: true)
+            } else {
+                tableView.beginUpdates()
+                if expandedSections.contains(section) {
+                    expandedSections.remove(section)
+                    tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+                    UIAccessibility.post(notification: .announcement, argument: "Section collapsed")
+                } else {
+                    expandedSections.insert(section)
+                    tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+                    UIAccessibility.post(notification: .announcement, argument: "Section expanded")
+                }
+                tableView.endUpdates()
+            }
+    }
+
 }
 
 extension SettingsViewController: MixAudioSettingCellDelegate {
     func onSettingValueChanged(_ cell: MixAudioSettingCell, settingSwitch: UISwitch) {
-        // Note: The UI for this setting is "Enable Media Controls" but the setting is stored as
-        //       "Mixes with Others" (the inverse of "Enable Media Controls")
-        
         guard settingSwitch.isOn else {
-            // If the setting switch is now off, the user disabled media controls. This doesn't
-            // require a warning alert, so just set mixesWithOthers to true and return.
             updateSetting(true)
             return
         }
-        
-        // Otherwise, the user is turning on media controls, so we need to show a warning to make sure
-        // they understand what this change means in terms of how other audio apps will stop Soundscape
-        // from playing. This warning was added based on bug bash feedback on 12/3/20.
-        // Show an alert indicating that the user can download an enhanced version of the voice in Settings
+
         let alert = UIAlertController(title: GDLocalizedString("general.alert.confirmation_title"),
                                       message: GDLocalizedString("setting.audio.mix_with_others.confirmation"),
                                       preferredStyle: .alert)
         
         let mixAction = UIAlertAction(title: GDLocalizedString("settings.audio.mix_with_others.title"), style: .default) { [weak self] (_) in
-            // Make the setting switch - turn off mixesWithOthers
             self?.updateSetting(false)
             self?.focusOnCell(cell)
         }
@@ -191,12 +256,8 @@ extension SettingsViewController: MixAudioSettingCellDelegate {
         alert.preferredAction = mixAction
         
         alert.addAction(UIAlertAction(title: GDLocalizedString("general.alert.cancel"), style: .cancel, handler: { [weak self] (_) in
-            // Toggle the setting back off
             settingSwitch.isOn = false
-            
-            // Track that the user decided not to enable media controls
             GDATelemetry.track("settings.mix_audio.cancel", with: ["context": "app_settings"])
-            
             self?.focusOnCell(cell)
         }))
         
@@ -241,5 +302,4 @@ extension SettingsViewController: LargeBannerContainerView {
         largeBannerContainerView.setHeight(height)
         tableView.reloadData()
     }
-    
 }

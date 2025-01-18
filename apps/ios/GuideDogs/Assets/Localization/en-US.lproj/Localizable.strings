@@ -380,20 +380,8 @@
 /* Settings title, About Soundscape {NumberedPlaceholder="Soundscape"} */
 "settings.about_app" = "About Soundscape";
 
-/* Settings title,General Settings */
-"settings.section.general" = "General Settings";
-
 /* Settings title,Units of Measure */
 "settings.section.units" = "Units of Measure";
-
-/* Settings title, Troubleshooting */
-"settings.section.troubleshooting" = "Troubleshooting";
-
-/* Settings title, About */
-"settings.section.about" = "About";
-
-/* Settings title, Telemetry */
-"settings.section.telemetry" = "Telemetry";
 
 /* Settings title, Share Usage Data */
 "settings.section.share_usage_data" = "Share Usage Data";
@@ -416,12 +404,47 @@
 /* Language display name. %1$@ is a language name, %2$@ is the country name. e.g. "English (United Kingdom)" {NumberedPlaceholder="%1$@", "%2$@"} */
 "settings.language.language_name" = "%1$@ (%2$@)";
 
+"menu.manage_callouts.all" = "Allow Callouts";
+
+"menu.manage_callouts.poi" = "Places and Landmarks";
+
+"menu.manage_callouts.mobility" = "Mobility";
+
+"menu.manage_callouts.beacon" = "Distance to the Audio Beacon";
+
+"menu.manage_callouts.shake" = "Repeat Callouts";
+
+
+//------------------------------------------------------------------------------
+// MARK: Settings (Sections)
+//------------------------------------------------------------------------------
+
+/* Settings title, General settings for the app */
+"settings.section.general" = "General settings for the app.";
+
+/* The title for the screen which configures media controls (play/pause/next/etc) related settings */
+"settings.audio.media_controls" = "Control how audio interacts with other media.";
+
+/* Settings title, Manage the callouts that help navigate */
+"menu.manage_callouts" = "Manage the callouts that help navigate.";
+
+/* Settings title, Settings for including unnamed roads */
+"settings.section.street_preview" = "Settings for including unnamed roads.";
+
+/* Settings title, Options for troubleshooting the app */
+"settings.section.troubleshooting" = "Options for troubleshooting the app.";
+
+/* Settings title, Information about the app */
+"settings.section.about" = "Information about the app.";
+
+/* Settings title, Manage data collection and privacy */
+"settings.section.telemetry" = "Manage data collection and privacy.";
+
+
+
 //------------------------------------------------------------------------------
 // MARK: Settings (Audio)
 //------------------------------------------------------------------------------
-
-/* The title for the screen which configures media controls (play/pause/next/etc) related settings */
-"settings.audio.media_controls" = "Media Controls";
 
 /* A title for a toggle for an audio setting which determines if the current app's audio will be mixed with others. If ON, this app will output audio which could be played at the same time as other apps that play audio, such as another music player app. */
 "settings.audio.mix_with_others.title" = "Enable Media Controls";
@@ -720,7 +743,7 @@
 //------------------------------------------------------------------------------
 
 /* Street Preview, View title, Street Preview is functionality that allows the user to select any location in the world to preview the area at street level in order to familiarise and build a mental map of the space. {NumberedPlaceholder="Soundscape Street Preview"} */
-"preview.title" = "Soundscape Street Preview";
+"preview.title" = "Street Preview";
 
 /* Text displayed when the current location is not known while previewing */
 "preview.current_intersection_unknown.label" = "Current Location Unknown";
@@ -2149,9 +2172,6 @@
 
 /* Title, Head Tracking Headphones, "head tracking headphones" is a term that refers to headphones which include sensors that track a person's head movements */
 "menu.devices" = "Head Tracking Headphones";
-
-/* Title, Manage Callouts */
-"menu.manage_callouts" = "Manage Callouts";
 
 /* Title, Help and Tutorials */
 "menu.help_and_tutorials" = "Help & Tutorials";

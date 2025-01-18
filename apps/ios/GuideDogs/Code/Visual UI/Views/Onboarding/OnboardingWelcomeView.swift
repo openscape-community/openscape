@@ -14,16 +14,32 @@ struct OnboardingWelcomeView: View {
     // MARK: Properties
     
     @EnvironmentObject var viewModel: OnboardingViewModel
-    
     let context: OnboardingBehavior.Context
-    
+
     @ViewBuilder
     private var destination: some View {
-        if LocalizationContext.deviceLocale.identifierHyphened == LocalizationContext.currentAppLocale.identifierHyphened {
+        if shouldSkipLanguageSelection() {
             OnboardingHeadphoneView()
         } else {
             OnboardingLanguageView()
         }
+    }
+    
+    // Determines whether to skip language selection based on device locale, app locale, and user preferences
+    private func shouldSkipLanguageSelection() -> Bool {
+        let deviceLocale = LocalizationContext.deviceLocale.identifierHyphened
+        let appLocale = LocalizationContext.currentAppLocale.identifierHyphened
+        
+        // Extract language codes for comparison
+        let deviceLanguageCode = Locale(identifier: deviceLocale).languageCode
+        let appLanguageCode = Locale(identifier: appLocale).languageCode
+        
+        // Check if languages match (ignoring regional differences) and if the user allows skipping
+        if let deviceLanguageCode, let appLanguageCode, deviceLanguageCode == appLanguageCode {
+            return !UserSettings.alwaysShowLanguageSelection
+        }
+        
+        return false
     }
     
     // MARK: `body`
@@ -61,14 +77,19 @@ struct OnboardingWelcomeView: View {
             AppContext.shared.eventProcessor.deactivateCustom()
         }
     }
-    
 }
 
+// Mocked UserSettings for demonstration purposes
+struct UserSettings {
+    static var alwaysShowLanguageSelection: Bool = false // User-configurable setting
+}
+
+// MARK: Preview
 struct FirstLaunchWelcomeView_Previews: PreviewProvider {
     
     static var previews: some View {
         OnboardingWelcomeView(context: .firstUse)
             .environmentObject(OnboardingViewModel())
     }
-    
 }
+
