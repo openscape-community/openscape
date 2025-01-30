@@ -2713,6 +2713,7 @@
 /*  */
 "devices.explain_ar.connected.airpods" = "Du kan nu börja använda dina AirPods. Stoppa undan telefonen i fickan och ge dig av! Soundscape spårar nu huvudets riktning så du behöver inte hålla telefonen i handen.";
 
+"devices.explain_ar.connected.boseframes" = "Du kan nu börja använda dina Bose Frames. Stoppa undan telefonen i fickan och ge dig av! Soundscape spårar nu huvudets riktning så du behöver inte hålla telefonen i handen.";
 
 /*  */
 "devices.explain_ar.paired" = "Soundscape är inte anslutet till ditt %@. Kontrollera att dina hörlurar är aktiverade och finns i närheten av telefonen.";
@@ -2768,6 +2769,8 @@
 
 /*  */
 "devices.connect_headset.completed.airpods" = "Grattis! Du kan nu börja använda dina AirPods. Stoppa undan telefonen i fickan och ge dig av! Soundscape spårar nu vilken riktning du färdas i, så att du inte behöver hålla telefonen i handen. Med ett enda klick på hörlursknappen inaktiverar eller aktiverar du ljudfyren. Dubbelklicka om du vill få ett informationsljud om platsen och trippelklicka om du vill upprepa det senaste informationsljudet.";
+
+"devices.connect_headset.completed.boseframes" = "Grattis! Du kan nu börja använda dina Bose Frames. Stoppa undan telefonen i fickan och ge dig av! Soundscape spårar nu vilken riktning du färdas i, så att du inte behöver hålla telefonen i handen.";
 
 
 /*  */

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="JuR-oN-4JB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="JuR-oN-4JB">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -16,7 +16,7 @@
                 <navigationController storyboardIdentifier="EditableMapNavigation" id="fir-Ic-aC6" customClass="NavigationController" customModule="Soundscape" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="NV3-Mx-FjS"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ikX-41-gQg">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -36,17 +36,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NKI-Jr-lpB">
-                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <rect key="frame" x="0.0" y="92" width="414" height="804"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outlet property="delegate" destination="JuR-oN-4JB" id="RmJ-B9-M4H"/>
                                 </connections>
                             </mapView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nQw-lA-uTI">
-                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <rect key="frame" x="0.0" y="92" width="414" height="804"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="MD7-hn-nil">
-                                <rect key="frame" x="302" y="100" width="100" height="44"/>
+                                <rect key="frame" x="302" y="104" width="100" height="44"/>
                                 <subviews>
                                     <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nfn-r4-9JV" customClass="RoundedButton" customModule="Soundscape" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
@@ -152,10 +152,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5PN-4Q-cEu">
-                                <rect key="frame" x="0.0" y="88" width="414" height="33"/>
+                                <rect key="frame" x="0.0" y="92" width="414" height="36.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit to select a new location" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="anF-r1-gR9">
-                                        <rect key="frame" x="8" y="8" width="398" height="17"/>
+                                        <rect key="frame" x="8" y="8" width="398" height="20.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <color key="textColor" name="Background Base"/>
                                         <nil key="highlightedColor"/>
@@ -170,14 +170,14 @@
                                 </constraints>
                             </view>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bHw-mF-UdJ">
-                                <rect key="frame" x="0.0" y="121" width="414" height="775"/>
+                                <rect key="frame" x="0.0" y="128.5" width="414" height="767.5"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outlet property="delegate" destination="h69-qw-bYg" id="eAc-3h-IGt"/>
                                 </connections>
                             </mapView>
                             <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="baseline_place_red_36pt" translatesAutoresizingMaskIntoConstraints="NO" id="oOA-g9-RIZ">
-                                <rect key="frame" x="189" y="472.5" width="36" height="36"/>
+                                <rect key="frame" x="189" y="476.5" width="36" height="36"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                         </subviews>
@@ -229,7 +229,7 @@
                 <navigationController storyboardIdentifier="ExpandableMapNavigation" id="8bX-rz-fCK" customClass="NavigationController" customModule="Soundscape" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="61c-Hp-utA"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oAe-4G-nee">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -249,7 +249,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l85-Yk-Gt6">
-                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <rect key="frame" x="0.0" y="48" width="414" height="848"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outlet property="delegate" destination="EH6-sn-Wrf" id="zPA-KW-PKh"/>
@@ -278,14 +278,14 @@
     </scenes>
     <designables>
         <designable name="Nfn-r4-9JV">
-            <size key="intrinsicContentSize" width="22.5" height="22"/>
+            <size key="intrinsicContentSize" width="27.5" height="24"/>
         </designable>
         <designable name="loU-bV-Vdb">
-            <size key="intrinsicContentSize" width="22.5" height="22.5"/>
+            <size key="intrinsicContentSize" width="26.5" height="25.5"/>
         </designable>
     </designables>
     <resources>
-        <image name="arrow.triangle.branch" catalog="system" width="128" height="108"/>
+        <image name="arrow.triangle.branch" catalog="system" width="128" height="110"/>
         <image name="arrow.up.left.and.arrow.down.right" catalog="system" width="128" height="115"/>
         <image name="baseline_place_red_36pt" width="36" height="36"/>
         <namedColor name="Background Base">

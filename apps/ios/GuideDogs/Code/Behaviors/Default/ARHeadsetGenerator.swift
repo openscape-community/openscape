@@ -141,6 +141,8 @@ class ARHeadsetGenerator: AutomaticGenerator {
         var needsCalibratingCalloutString: String
         
         switch event.deviceType {
+        case .boseFramesRondo:
+            needsCalibratingCalloutString = GDLocalizedString("devices.callouts.needs_calibration.in_ear")
         default:
             needsCalibratingCalloutString = GDLocalizedString("devices.callouts.needs_calibration")
         }

@@ -236,6 +236,8 @@ extension DeviceManager {
         switch deviceType {
         case .apple:
             return HeadphoneMotionManagerWrapper(id: uuid, name: name)
+        case .boseFramesRondo:
+            return BoseFramesMotionManager(id: uuid, name: name)
         }
     }
 }

@@ -29,6 +29,7 @@ typealias DeviceCompletionHandler = (Result<Device, DeviceError>) -> Void
 
 enum DeviceType: String, Codable, CaseIterable {
     case apple
+    case boseFramesRondo
 }
 
 extension DeviceType {
@@ -41,7 +42,10 @@ extension DeviceType {
     // connected in Soundscape
     var reachability: DeviceReachability? {
         switch self {
-        case .apple: return HeadphoneMotionManagerReachabilityWrapper()
+        case .apple: 
+            return HeadphoneMotionManagerReachabilityWrapper()
+        case .boseFramesRondo:
+            return BoseFramesMotionManagerReachability()
         }
     }
     

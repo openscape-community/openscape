@@ -146,7 +146,9 @@ class DestinationTutorialBeaconPage: DestinationTutorialPage {
             switch device {
             case _ as HeadphoneMotionManagerWrapper:
                 string = orientationDoesntMatterAirPods
-                
+            case _ as BoseFramesMotionManager:
+                string = orientationDoesntMatterAirPods
+
             default:
                 string = holdingPhone
             }

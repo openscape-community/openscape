@@ -2250,6 +2250,8 @@
 /* Message indicating that the app has successfully been connected to a head tracking headset, {NumberedPlaceholder="AirPods","Soundscape"} */
 "devices.explain_ar.connected.airpods" = "Your AirPods are ready for use, so you can put your phone in your pocket and go! Soundscape is tracking the direction of your head so you do not need to hold the phone in your hand.";
 
+"devices.explain_ar.connected.boseframes" = "Your Bose Frames are ready for use, so you can put your phone in your pocket and go! Soundscape is tracking the direction of your head so you do not need to hold the phone in your hand.";
+
 /* Message indicating that the app has successfully been paired to head tracking headphones but is not connected, %@ headset name, "Soundscape is not currently connected to your AirPods Pro. Please ensure your headset is turned on and near your phone." {NumberedPlaceholder="%@"} */
 "devices.explain_ar.paired" = "Soundscape is not currently connected to your %@. Please ensure your headphones are turned on and near your phone.";
 
@@ -2291,6 +2293,9 @@
 
 /* Message displayed to the user after they successfully connect Soundscape to their AR headset. {NumberedPlaceholder="AirPods", "Soundscape"} */
 "devices.connect_headset.completed.airpods" = "Congratulations! Your AirPods are ready for use, so you can put your phone in your pocket and go! Soundscape will now track the direction of your head so you do not need to hold the phone in your hand. A single click on the headphones button will mute or unmute the beacon, double click will call out your location, and a triple click will repeat the last callout.";
+
+/* D.o for Bose Frame (Rondo) */
+"devices.connect_headset.completed.boseframes" = "Congratulations! Your Bose Frames are ready for use, so you can put your phone in your pocket and go! Soundscape will now track the direction of your head so you do not need to hold the phone in your hand.";
 
 /* Button label for a button that allows users to test their newly connected headset */
 "devices.connect_headset.completed.test" = "Check Your Headphones";

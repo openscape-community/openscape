@@ -175,7 +175,7 @@
 
 
 /*  */
-"general.loading.start" = "Getting things ready…";
+"general.loading.start" = "Getting things ready...";
 
 
 /*  */
@@ -2723,6 +2723,7 @@
 /*  */
 "devices.explain_ar.connected.airpods" = "Your AirPods are ready for use, so you can put your phone in your pocket and go! Soundscape is tracking the direction of your head so you do not need to hold the phone in your hand.";
 
+"devices.explain_ar.connected.boseframes" = "Your Bose Frames are ready for use, so you can put your phone in your pocket and go! Soundscape is tracking the direction of your head so you do not need to hold the phone in your hand.";
 
 /*  */
 "devices.explain_ar.paired" = "Soundscape is not currently connected to your %@. Please ensure your headphones are turned on and near your phone.";
@@ -2779,7 +2780,7 @@
 /*  */
 "devices.connect_headset.completed.airpods" = "Congratulations! Your AirPods are ready for use, so you can put your phone in your pocket and go! Soundscape will now track the direction of your head so you do not need to hold the phone in your hand. A single click on the headphones button will mute or unmute the beacon, double click will call out your location, and a triple click will repeat the last callout.";
 
-
+"devices.connect_headset.completed.boseframes" = "Congratulations! Your Bose Frames are ready for use, so you can put your phone in your pocket and go! Soundscape will now track the direction of your head so you do not need to hold the phone in your hand.";
 /*  */
 "devices.connect_headset.completed.test" = "Check Your Headphones";
 
