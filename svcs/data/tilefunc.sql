@@ -30,6 +30,9 @@ CREATE OR REPLACE FUNCTION
                    SELECT properties, osm_id, (ST_DumpPoints(geometry)).geom as building_point from places where feature_type='building'
                  ) as building, entrances e
                WHERE building.building_point = e.geometry group by building.osm_id
+               UNION
+               SELECT ARRAY[osm_id] as osm_ids, feature_type, feature_value, geom as geometry, properties
+                 FROM non_osm_data WHERE geom && TileBBox(zoom, tile_x, tile_y, 4326)
             ) as elements
             ORDER BY osm_ids
 $$

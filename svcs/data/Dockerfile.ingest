@@ -15,20 +15,37 @@ ENV IMPOSM_BINARY_RELEASE=0.11.1
 RUN tdnf -y update \
  && tdnf install -y ca-certificates-microsoft wget tar gzip \
  && mkdir -p /ingest/imposm3 \
+ && mkdir -p /ingest/extra_data \
  && wget -q -O - https://github.com/omniscale/imposm3/releases/download/v$IMPOSM_BINARY_RELEASE/imposm-$IMPOSM_BINARY_RELEASE-linux-x86-64.tar.gz | tar -xz --strip-components=1 -C /ingest/imposm3
 
 FROM mcr.microsoft.com/cbl-mariner/distroless/base:2.0 as final
 
-ENV PYTHONUNBUFFERED=true INGEST=/ingest TILES=/tiles MAPPING=/mapping UPDATE_FREQUENCY=minute
+ENV PYTHONUNBUFFERED=true INGEST=/ingest EXTRADATA=/ingest/extra_data TILES=/tiles MAPPING=/mapping UPDATE_FREQUENCY=minute
 
 COPY --from=imposm /ingest/ $INGEST/
 COPY --from=installer /staging/ /
 
 COPY requirements.txt requirements_kubernetes.txt ingest.py kubescape.py extracts.json tilefunc.sql $INGEST/
+# Add line(s) like the following to import data points from CSV files
+#COPY test_data.csv $EXTRADATA/
 COPY soundscape/other/mapping.yml $MAPPING/mapping.yml
 RUN wget -q -O $INGEST/postgis-vt-util.sql https://raw.githubusercontent.com/mapbox/postgis-vt-util/master/postgis-vt-util.sql
 
 RUN /usr/bin/pip3 install -r $INGEST/requirements.txt -r $INGEST/requirements_kubernetes.txt
 
 CMD  rm -f $TILES/*.pbf && rm -rf $TILES/imposm_cache $TILES/imposm_expired $TILES/imposm_diff && \
-    python3 $INGEST/ingest.py --imposm $INGEST/imposm3/imposm --mapping $MAPPING/mapping.yml --where $GEN_REGIONS --extracts $INGEST/extracts.json --cachedir $TILES/imposm_cache  --diffdir $TILES/imposm_diff --pbfdir $TILES --expiredir $TILES/imposm_expired --verbose --updatemodel importloop --delay $LOOP_TIME --telemetry $INGEST_FLAGS
+    python3 $INGEST/ingest.py \
+        --imposm $INGEST/imposm3/imposm \
+        --mapping $MAPPING/mapping.yml \
+        --where $GEN_REGIONS \
+        --extracts $INGEST/extracts.json \
+        --cachedir $TILES/imposm_cache  \
+        --diffdir $TILES/imposm_diff \
+        --pbfdir $TILES \
+        --expiredir $TILES/imposm_expired \
+        --verbose \
+        --updatemodel importloop \
+        --delay $LOOP_TIME \
+        --telemetry \
+        --extradatadir $EXTRADATA \
+        $INGEST_FLAGS
