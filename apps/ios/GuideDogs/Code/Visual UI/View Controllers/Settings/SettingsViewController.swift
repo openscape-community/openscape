@@ -15,11 +15,12 @@ class SettingsViewController: BaseTableViewController {
     private enum Section: Int, CaseIterable {
         case general = 0
         case audio = 1
-        case callouts = 2
-        case streetPreview = 3
-        case troubleshooting = 4
-        case about = 5
-        case telemetry = 6
+        case beacon = 2
+        case callouts = 3
+        case streetPreview = 4
+        case troubleshooting = 5
+        case about = 6
+        case telemetry = 7
     }
     
     private enum CalloutsRow: Int, CaseIterable {
@@ -33,12 +34,13 @@ class SettingsViewController: BaseTableViewController {
     private static let cellIdentifiers: [IndexPath: String] = [
         IndexPath(row: 0, section: Section.general.rawValue): "languageAndRegion",
         IndexPath(row: 1, section: Section.general.rawValue): "voice",
-        IndexPath(row: 2, section: Section.general.rawValue): "beaconSettings",
-        IndexPath(row: 3, section: Section.general.rawValue): "volumeSettings",
-        IndexPath(row: 4, section: Section.general.rawValue): "manageDevices",
-        IndexPath(row: 5, section: Section.general.rawValue): "siriShortcuts",
+        IndexPath(row: 2, section: Section.general.rawValue): "volumeSettings",
+        IndexPath(row: 3, section: Section.general.rawValue): "manageDevices",
+        IndexPath(row: 4, section: Section.general.rawValue): "siriShortcuts",
         
         IndexPath(row: 0, section: Section.audio.rawValue): "mixAudio",
+        
+        IndexPath(row: 0, section: Section.beacon.rawValue): "beaconSettings",
 
         IndexPath(row: CalloutsRow.all.rawValue, section: Section.callouts.rawValue): "allCallouts",
         IndexPath(row: CalloutsRow.poi.rawValue, section: Section.callouts.rawValue): "poiCallouts",
@@ -83,8 +85,9 @@ class SettingsViewController: BaseTableViewController {
         guard let sectionType = Section(rawValue: section) else { return 0 }
         
         switch sectionType {
-        case .general: return 6
+        case .general: return 5
         case .audio: return 1
+        case .beacon: return 1
         case .callouts: return SettingsContext.shared.automaticCalloutsEnabled ? 5 : 1
         case .streetPreview: return 1
         case .troubleshooting: return 1
@@ -142,6 +145,7 @@ class SettingsViewController: BaseTableViewController {
         switch sectionType {
         case .general: return GDLocalizedString("settings.section.general")
         case .audio: return GDLocalizedString("settings.audio.media_controls")
+        case .beacon: return GDLocalizedString("settings.beacon.title")
         case .callouts: return GDLocalizedString("menu.manage_callouts")
         case .about: return GDLocalizedString("settings.section.about")
         case .streetPreview: return GDLocalizedString("preview.title")

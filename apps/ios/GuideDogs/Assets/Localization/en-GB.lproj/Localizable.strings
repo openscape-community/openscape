@@ -575,7 +575,7 @@
 
 
 /*  */
-"beacon.settings_title" = "Beacon Settings";
+"settings.beacon.title" = "Beacon Settings";
 
 /*  */
 "beacon.settings.vicinity" = "Audio Mute Distance";

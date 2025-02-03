@@ -416,6 +416,8 @@
 /* Language display name. %1$@ is a language name, %2$@ is the country name. e.g. "English (United Kingdom)" {NumberedPlaceholder="%1$@", "%2$@"} */
 "settings.language.language_name" = "%1$@ (%2$@)";
 
+
+
 //------------------------------------------------------------------------------
 // MARK: Settings (Audio)
 //------------------------------------------------------------------------------
@@ -509,8 +511,7 @@
 //------------------------------------------------------------------------------
 
 /* Title of the settings screen for beacons. This screen allows users to configure the way the audio beacon sounds. See Terms for the definition of "beacon". */
-"beacon.settings_title" = "Beacon Settings";
-
+"settings.beacon.title" = "Beacon Settings";
 
 /* Title of a section in the beacon settings page where the user can select the distance threshold when a beacon automatically stops playing. */
 "beacon.settings.vicinity" = "Audio Mute Distance";
